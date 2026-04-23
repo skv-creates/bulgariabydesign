@@ -24,7 +24,7 @@ export function Manifest() {
     <section className="mx-auto w-full max-w-[640px] px-4 pt-24 pb-24 sm:pt-32 sm:pb-32 lg:pt-40 lg:pb-40">
       <div className="flex flex-col gap-3 text-ink-2">
         <h2 className="text-lg font-semibold tracking-tight">
-          Манифест: България по дизайн
+          Манифест: България чрез дизайн
         </h2>
         <p className="text-sm font-medium">21 Апр 2026, София</p>
       </div>

@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-col gap-4">
           <Image
             src="/images/logo-footer.svg"
-            alt="България по дизайн"
+            alt="България чрез дизайн"
             width={194}
             height={21}
             style={{ height: "auto" }}
@@ -28,7 +28,7 @@ export function Footer() {
           >
             Контакт
           </a>
-          <p>© 2026 България по дизайн</p>
+          <p>© 2026 България чрез дизайн</p>
         </div>
       </div>
     </footer>

@@ -18,20 +18,20 @@ const sofiaSansSemiCondensed = Sofia_Sans_Semi_Condensed({
 });
 
 const description =
-  "„България по дизайн“ е инициатива за достоен и модерен визуален облик на държавните институции. Вижте нашата визия за по-красива България и подкрепете манифеста.";
+  "„България чрез дизайн“ е инициатива за достоен и модерен визуален облик на държавните институции. Вижте нашата визия за по-красива България и подкрепете манифеста.";
 
 export const metadata: Metadata = {
-  title: "България по дизайн",
+  title: "България чрез дизайн",
   description,
   openGraph: {
-    title: "България по дизайн",
+    title: "България чрез дизайн",
     description,
     locale: "bg_BG",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "България по дизайн",
+    title: "България чрез дизайн",
     description,
   },
 };

@@ -28,7 +28,7 @@ export function Hero() {
             className="whitespace-nowrap font-display font-extrabold italic leading-[0.8] tracking-[-0.02em] text-white/90 text-center"
             style={{ fontSize: "12.3cqi" }}
           >
-            България по дизайн
+            България чрез дизайн
           </h1>
         </div>
 

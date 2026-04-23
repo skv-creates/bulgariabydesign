@@ -22,10 +22,10 @@ export function Navigation() {
       }`}
     >
       <div className="mx-auto flex max-w-[1416px] items-center justify-between px-4 py-4 sm:px-8 sm:py-6 lg:px-12 lg:py-8">
-        <a href="#top" aria-label="България по дизайн" className="block">
+        <a href="#top" aria-label="България чрез дизайн" className="block">
           <Image
             src="/images/logo-nav.svg"
-            alt="България по дизайн"
+            alt="България чрез дизайн"
             width={98}
             height={38}
             priority
