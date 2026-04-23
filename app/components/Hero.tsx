@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FitText } from "./FitText";
 
 export function Hero() {
   return (
@@ -20,17 +21,9 @@ export function Hero() {
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-black/0 to-black/30"
         />
 
-        <div
-          className="relative w-full"
-          style={{ containerType: "inline-size" }}
-        >
-          <h1
-            className="whitespace-nowrap font-display font-extrabold italic leading-[0.8] tracking-[-0.02em] text-white/90 text-center"
-            style={{ fontSize: "12.3cqi" }}
-          >
-            България чрез дизайн
-          </h1>
-        </div>
+        <FitText className="font-display font-extrabold italic leading-[0.8] tracking-[-0.02em] text-white/90">
+          България чрез дизайн
+        </FitText>
 
         <div className="relative flex max-w-[611px] flex-col gap-6 sm:gap-10">
           <p className="text-xl font-bold leading-[1.15] tracking-tight text-white/90 sm:text-2xl lg:text-[40px] lg:leading-[1.1]">

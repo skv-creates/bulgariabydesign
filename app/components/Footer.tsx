@@ -8,8 +8,8 @@ export function Footer() {
           <Image
             src="/images/logo-footer.svg"
             alt="България чрез дизайн"
-            width={194}
-            height={21}
+            width={202}
+            height={22}
             style={{ height: "auto" }}
             className="w-[194px]"
           />

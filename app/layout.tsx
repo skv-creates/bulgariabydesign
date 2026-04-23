@@ -28,11 +28,13 @@ export const metadata: Metadata = {
     description,
     locale: "bg_BG",
     type: "website",
+    images: [{ url: "/images/og-cover.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "България чрез дизайн",
     description,
+    images: ["/images/og-cover.png"],
   },
 };
 

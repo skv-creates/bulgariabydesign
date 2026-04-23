@@ -26,8 +26,8 @@ export function Navigation() {
           <Image
             src="/images/logo-nav.svg"
             alt="България чрез дизайн"
-            width={98}
-            height={38}
+            width={112}
+            height={39}
             priority
             style={{ height: "auto" }}
             className="w-[80px] sm:w-[98px]"
