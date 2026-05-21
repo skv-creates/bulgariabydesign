@@ -107,14 +107,16 @@ export function Gallery() {
       try {
         root.releasePointerCapture(e.pointerId);
       } catch {}
+      // Touch/pen taps and drags both end in a synthetic click on the nudge
+      // halves — swallow it so only swipe drives the slideshow on mobile.
+      suppressClickRef.current = true;
       if (draggingRef.current) {
         draggingRef.current = false;
-        suppressClickRef.current = true;
         setRate(hoveringRef.current ? HOVER_RATE : 1);
       }
     };
 
-    // A drag ends with a synthetic click on one of the nudge halves — swallow it.
+    // Swallow the click that follows any touch/pen interaction (see onUp).
     const onClickCapture = (e: Event) => {
       if (suppressClickRef.current) {
         suppressClickRef.current = false;
