@@ -22,6 +22,8 @@ export function Gallery() {
   const animRef = useRef<Animation | null>(null);
   const hoveringRef = useRef(false);
   const resumeTimerRef = useRef<number | null>(null);
+  const draggingRef = useRef(false);
+  const suppressClickRef = useRef(false);
 
   const setRate = (rate: number) => {
     const anim = animRef.current;
@@ -50,18 +52,91 @@ export function Gallery() {
     if (!root) return;
     const slow = () => {
       hoveringRef.current = true;
-      if (resumeTimerRef.current == null) setRate(HOVER_RATE);
+      if (resumeTimerRef.current == null && !draggingRef.current) setRate(HOVER_RATE);
     };
     const resume = () => {
       hoveringRef.current = false;
-      if (resumeTimerRef.current == null) setRate(1);
+      if (resumeTimerRef.current == null && !draggingRef.current) setRate(1);
     };
     root.addEventListener("pointerenter", slow);
     root.addEventListener("pointerleave", resume);
 
+    // Touch/pen drag-to-scrub: translate finger movement into the animation's
+    // currentTime so the marquee can be swiped on mobile.
+    const SWIPE_THRESHOLD = 8;
+    let activeId: number | null = null;
+    let startX = 0;
+    let startTime = 0;
+    let pxToTime = 0;
+
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" || activeId !== null) return;
+      activeId = e.pointerId;
+      startX = e.clientX;
+      startTime = Number(anim.currentTime ?? 0) || 0;
+      // translateX(-50%) covers exactly one of the two image sets.
+      const oneSetWidth = track.scrollWidth / 2 || 1;
+      pxToTime = BASE_DURATION_MS / oneSetWidth;
+      draggingRef.current = false;
+      if (resumeTimerRef.current != null) {
+        window.clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerId !== activeId) return;
+      const dx = e.clientX - startX;
+      if (!draggingRef.current) {
+        if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+        draggingRef.current = true;
+        setRate(0);
+        try {
+          root.setPointerCapture(e.pointerId);
+        } catch {}
+      }
+      // Dragging right reveals earlier images, i.e. rewinds currentTime.
+      const target = startTime - dx * pxToTime;
+      anim.currentTime =
+        ((target % BASE_DURATION_MS) + BASE_DURATION_MS) % BASE_DURATION_MS;
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerId !== activeId) return;
+      activeId = null;
+      try {
+        root.releasePointerCapture(e.pointerId);
+      } catch {}
+      if (draggingRef.current) {
+        draggingRef.current = false;
+        suppressClickRef.current = true;
+        setRate(hoveringRef.current ? HOVER_RATE : 1);
+      }
+    };
+
+    // A drag ends with a synthetic click on one of the nudge halves — swallow it.
+    const onClickCapture = (e: Event) => {
+      if (suppressClickRef.current) {
+        suppressClickRef.current = false;
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    };
+
+    root.addEventListener("pointerdown", onDown);
+    root.addEventListener("pointermove", onMove);
+    root.addEventListener("pointerup", onUp);
+    root.addEventListener("pointercancel", onUp);
+    root.addEventListener("click", onClickCapture, true);
+
     return () => {
       root.removeEventListener("pointerenter", slow);
       root.removeEventListener("pointerleave", resume);
+      root.removeEventListener("pointerdown", onDown);
+      root.removeEventListener("pointermove", onMove);
+      root.removeEventListener("pointerup", onUp);
+      root.removeEventListener("pointercancel", onUp);
+      root.removeEventListener("click", onClickCapture, true);
       if (resumeTimerRef.current != null) {
         window.clearTimeout(resumeTimerRef.current);
         resumeTimerRef.current = null;
@@ -96,7 +171,7 @@ export function Gallery() {
     <section
       id="gallery"
       aria-label="Галерия"
-      className="relative mt-10 scroll-mt-24 overflow-hidden py-10 sm:mt-16"
+      className="relative mt-10 scroll-mt-24 touch-pan-y overflow-hidden py-10 sm:mt-16"
     >
       <div ref={trackRef} className="flex w-max gap-3 will-change-transform">
         {[...images, ...images].map((img, i) => (
