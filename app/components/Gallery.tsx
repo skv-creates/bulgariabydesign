@@ -28,7 +28,10 @@ export function Gallery() {
   const setRate = (rate: number) => {
     const anim = animRef.current;
     if (!anim) return;
-    if (typeof anim.updatePlaybackRate === "function") {
+    // updatePlaybackRate preserves the current position by dividing by the
+    // rate — which is undefined at 0 and snaps the track back to the first
+    // frame. Use the synchronous setter when stopping; it just holds in place.
+    if (rate !== 0 && typeof anim.updatePlaybackRate === "function") {
       anim.updatePlaybackRate(rate);
     } else {
       anim.playbackRate = rate;
